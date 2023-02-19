@@ -9,6 +9,7 @@ import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
+import * as process from 'process';
 
 @Injectable()
 export class AuthService {
@@ -39,9 +40,14 @@ export class AuthService {
   }
 
   private async generateToken(user) {
-    const payload = { email: user.email, id: user.id, role: user.role };
+    const payload = { email: user.email, id: user.id };
     return {
       access_token: this.jwtService.sign(payload),
+      refresh_token: this.jwtService.sign(payload, {
+        secret:
+          process.env.JWT_REFRESH_SECRET || 'jwt_refresh_token_secret_key',
+        expiresIn: 60,
+      }),
     };
   }
 
@@ -60,5 +66,10 @@ export class AuthService {
     throw new UnauthorizedException({
       message: 'Email or Password is not correct',
     });
+  }
+
+  async refreshToken(token: string) {
+    const user = this.jwtService.decode(token);
+    return this.generateToken(user);
   }
 }

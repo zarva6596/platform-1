@@ -13,7 +13,7 @@ export class UsersService {
   ) {}
 
   async getAllUsers(): Promise<User[]> {
-    return this.userModule.find().populate('role').exec();
+    return this.userModule.find().exec();
   }
 
   async getUser(id): Promise<User> {

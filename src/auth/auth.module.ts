@@ -10,9 +10,9 @@ import { JwtModule } from '@nestjs/jwt';
   imports: [
     forwardRef(() => UsersModule),
     JwtModule.register({
-      secret: process.env.JWT_ACCESS_SECRET || 'SECRET',
+      secret: process.env.JWT_ACCESS_SECRET || 'access_token_secret_key',
       signOptions: {
-        expiresIn: '24h',
+        expiresIn: '3s',
       },
     }),
   ],
