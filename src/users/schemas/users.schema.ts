@@ -26,10 +26,10 @@ export class User {
   createAt: string;
 
   @Prop({
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.String,
     ref: 'Role',
   })
-  role: object;
+  role: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

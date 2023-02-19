@@ -10,7 +10,7 @@ export class RolesService {
   ) {}
 
   async getRoles(): Promise<Role[]> {
-    return this.roleModule.find().exec();
+    return this.roleModule.find().populate('users').exec();
   }
 
   async createRole(body): Promise<Role> {
@@ -25,5 +25,13 @@ export class RolesService {
 
   async getRoleByValue(value) {
     return await this.roleModule.findOne({ value }).exec();
+  }
+
+  async addUser(value, user: string) {
+    const data = await this.roleModule.findOne({ value }).exec();
+    return this.roleModule.findOneAndUpdate(
+      { value },
+      { value, users: [...data.users, user] },
+    );
   }
 }

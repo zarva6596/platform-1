@@ -11,11 +11,13 @@ export class Role {
   @Prop()
   description: string;
 
-  @Prop({
-    type: mongoose.Schema.Types.Array,
-    ref: 'users',
-  })
-  users: [];
+  @Prop([
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ])
+  users: object[];
 }
 
 export const RoleSchema = SchemaFactory.createForClass(Role);

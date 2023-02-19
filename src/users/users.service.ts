@@ -34,11 +34,12 @@ export class UsersService {
 
   async createUser(body): Promise<User> {
     try {
-      const role = await this.roleService.getRoleByValue('USER');
+      const role = await this.roleService.getRoleByValue(body.role);
       const newUser = await new this.userModule({
         ...body,
-        role: role._id,
+        role: role.value,
       });
+      await this.roleService.addUser(role.value, newUser._id);
       return await newUser.save();
     } catch (e) {
       /* TODO */
